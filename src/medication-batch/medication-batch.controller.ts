@@ -6,7 +6,7 @@ import { CreateMedicationBatchDto } from './dto/create-medication-batch.dto';
 export class MedicationBatchController {
   constructor(
     private readonly medicationBatchService: MedicationBatchService,
-  ) {}
+  ) { }
 
   @Post()
   create(@Body() data: CreateMedicationBatchDto) {
@@ -21,5 +21,10 @@ export class MedicationBatchController {
   @Get('medication/:medicationId')
   findByMedicationId(@Param('medicationId') medicationId: string) {
     return this.medicationBatchService.findByMedicationId(medicationId);
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.medicationBatchService.findOne(id);
   }
 }

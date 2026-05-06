@@ -31,4 +31,10 @@ export class MedicationBatchService {
       (batch) => batch.medicationId === medicationId,
     );
   }
+
+  findOne(id: string): MedicationBatch | undefined {
+    return this.medicationBatches.find(
+      (batch) => batch.id === id,
+    );
+  }
 }
