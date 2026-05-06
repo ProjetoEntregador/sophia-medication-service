@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsDateString } from 'class-validator';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 export class CreateMedicationDto {
   @IsString()
@@ -13,9 +13,14 @@ export class CreateMedicationDto {
   @IsString()
   manufacturer!: string;
 
-  @IsNumber()
-  stockQuantity!: number;
+  @IsOptional()
+  @IsString()
+  description?: string;
 
-  @IsDateString()
-  expirationDate!: string;
+  @IsOptional()
+  @IsString()
+  stripe?: string;
+
+  @IsBoolean()
+  prescriptionRequired!: boolean;
 }

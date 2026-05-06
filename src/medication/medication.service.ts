@@ -1,12 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMedicationDto } from './dto/create-medication.dto';
 
+type Medication = CreateMedicationDto & {
+  id: string;
+};
+
 @Injectable()
 export class MedicationService {
-  private medications: CreateMedicationDto[] = [];
+  private medications: Medication[] = [];
 
-  create(data: CreateMedicationDto) {
-    const medication = {
+  create(data: CreateMedicationDto): Medication {
+    const medication: Medication = {
       id: Date.now().toString(),
       ...data,
     };
@@ -16,7 +20,7 @@ export class MedicationService {
     return medication;
   }
 
-  findAll() {
+  findAll(): Medication[] {
     return this.medications;
   }
 }
