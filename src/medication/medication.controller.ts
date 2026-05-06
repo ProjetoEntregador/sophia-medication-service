@@ -1,10 +1,10 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param } from '@nestjs/common';
 import { MedicationService } from './medication.service';
 import { CreateMedicationDto } from './dto/create-medication.dto';
 
 @Controller('medications')
 export class MedicationController {
-  constructor(private readonly medicationService: MedicationService) {}
+  constructor(private readonly medicationService: MedicationService) { }
 
   @Post()
   create(@Body() data: CreateMedicationDto) {
@@ -14,5 +14,10 @@ export class MedicationController {
   @Get()
   findAll() {
     return this.medicationService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.medicationService.findOne(id);
   }
 }

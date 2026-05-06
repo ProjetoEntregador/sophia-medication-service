@@ -23,4 +23,10 @@ export class MedicationService {
   findAll(): Medication[] {
     return this.medications;
   }
+
+  findOne(id: string): Medication | undefined {
+    return this.medications.find(
+      (medication) => medication.id === id,
+    );
+  }
 }
