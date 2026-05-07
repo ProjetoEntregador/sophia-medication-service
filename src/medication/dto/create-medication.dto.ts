@@ -1,4 +1,5 @@
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsOptional, IsString, IsNumber, Min } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CreateMedicationDto {
   @IsString()
@@ -23,4 +24,9 @@ export class CreateMedicationDto {
 
   @IsBoolean()
   prescriptionRequired!: boolean;
+
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
+  unitPrice!: number;
 }

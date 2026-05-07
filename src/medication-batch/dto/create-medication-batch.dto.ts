@@ -1,8 +1,4 @@
-import {
-  IsDateString,
-  IsNumber,
-  IsString,
-} from 'class-validator';
+import { IsDateString, IsNumber, IsString } from 'class-validator';
 
 export class CreateMedicationBatchDto {
   @IsString()
@@ -16,7 +12,4 @@ export class CreateMedicationBatchDto {
 
   @IsDateString()
   expirationDate!: string;
-
-  @IsNumber()
-  unitPrice!: number;
 }

@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: medication-postgres
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: medication_user
+      POSTGRES_PASSWORD: medication_password
+      POSTGRES_DB: medication_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

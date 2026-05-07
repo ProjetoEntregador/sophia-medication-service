@@ -1,9 +1,20 @@
 import { Module } from '@nestjs/common';
-import { MedicationService } from './medication.service';
-import { MedicationController } from './medication.controller';
+
+import { MedicationController } from './controllers/medication.controller';
+import { MedicationService } from './services/medication.service';
+import { CreateMedicationUseCase } from './use-cases/create-medication.use-case';
+import { MedicationRepository } from './repositories/medication.repository';
+import { MedicationRepositoryInterface } from './repositories/medication.repository.interface';
 
 @Module({
-  providers: [MedicationService],
-  controllers: [MedicationController]
+  controllers: [MedicationController],
+  providers: [
+    MedicationService,
+    CreateMedicationUseCase,
+    {
+      provide: MedicationRepositoryInterface,
+      useClass: MedicationRepository,
+    },
+  ],
 })
 export class MedicationModule {}
