@@ -1,4 +1,4 @@
-import { IsDateString, IsNumber, IsString } from 'class-validator';
+import { IsDateString, IsInt, IsPositive, IsString } from 'class-validator';
 
 export class CreateMedicationBatchDto {
   @IsString()
@@ -7,7 +7,8 @@ export class CreateMedicationBatchDto {
   @IsString()
   batchNumber!: string;
 
-  @IsNumber()
+  @IsInt()
+  @IsPositive()
   quantity!: number;
 
   @IsDateString()
