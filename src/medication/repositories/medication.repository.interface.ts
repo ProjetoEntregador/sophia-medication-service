@@ -1,10 +1,13 @@
 import { CreateMedicationDto } from '../dto/create-medication.dto';
+import { UpdateMedicationDto } from '../dto/update-medication.dto';
 import { MedicationEntity } from '../entities/medication.entity';
 
 export abstract class MedicationRepositoryInterface {
   abstract create(
     data: CreateMedicationDto,
   ): Promise<MedicationEntity>;
+
+  abstract update(id: string, data: UpdateMedicationDto): Promise<any> | undefined;
 
   abstract findAll(): Promise<MedicationEntity[]>;
 

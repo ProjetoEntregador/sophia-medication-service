@@ -3,6 +3,7 @@ import { eq } from 'drizzle-orm';
 import { DB } from '../../database/database.module';
 import { medications } from '../../database/schema';
 import { CreateMedicationDto } from '../dto/create-medication.dto';
+import { UpdateMedicationDto } from '../dto/update-medication.dto';
 import { MedicationEntity } from '../entities/medication.entity';
 import { MedicationRepositoryInterface } from './medication.repository.interface';
 
@@ -30,6 +31,15 @@ export class MedicationRepository implements MedicationRepositoryInterface {
     return medication as MedicationEntity;
   }
 
+  async update(id: string, data: UpdateMedicationDto) {
+  const [medication] = await this.db
+    .update(medications)
+    .set(data)
+    .where(eq(medications.id, id))
+    .returning();
+
+  return medication;
+}
   async findAll(): Promise<MedicationEntity[]> {
     const result = await this.db.select().from(medications);
 
@@ -44,4 +54,5 @@ export class MedicationRepository implements MedicationRepositoryInterface {
 
     return medication as MedicationEntity | undefined;
   }
+  
 }
