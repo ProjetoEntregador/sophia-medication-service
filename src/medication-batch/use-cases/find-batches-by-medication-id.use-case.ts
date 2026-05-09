@@ -1,15 +1,16 @@
 import { Injectable } from '@nestjs/common';
 
-import { CreateMedicationBatchDto } from '../dto/create-medication-batch.dto';
 import { MedicationBatchRepositoryInterface } from '../repositories/medication-batch.repository.interface';
 
 @Injectable()
-export class CreateMedicationBatchUseCase {
+export class FindBatchesByMedicationIdUseCase {
   constructor(
     private readonly medicationBatchRepository: MedicationBatchRepositoryInterface,
   ) {}
 
-  async execute(data: CreateMedicationBatchDto) {
-    return this.medicationBatchRepository.create(data);
+  async execute(medicationId: string) {
+    return this.medicationBatchRepository.findByMedicationId(
+      medicationId,
+    );
   }
 }
