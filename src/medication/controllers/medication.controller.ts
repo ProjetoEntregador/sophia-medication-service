@@ -21,7 +21,7 @@ export class MedicationController {
     @Param('id') id: string,
     @Body() data: UpdateMedicationDto,
   ) {
-    return this.updateMedicationUseCase.execute(id, data);
+    return this.medicationService.update(id, data);
   }
 
   @Get()

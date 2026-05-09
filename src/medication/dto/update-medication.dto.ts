@@ -1,10 +1,4 @@
-export class UpdateMedicationDto {
-  name?: string;
-  dosage?: string;
-  pharmaceuticalForm?: string;
-  manufacturer?: string;
-  description?: string;
-  stripe?: string;
-  prescriptionRequired?: boolean;
-  unitPrice?: string;
-}
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateMedicationDto } from './create-medication.dto';
+
+export class UpdateMedicationDto extends PartialType(CreateMedicationDto) {}
