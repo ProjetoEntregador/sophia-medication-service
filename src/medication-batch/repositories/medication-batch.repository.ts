@@ -1,15 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
-import { db } from 'src/database/db';
-import { medicationBatches } from 'src/database/schema';
+import { DB } from '../../database/database.module';
+import { medicationBatches } from '../../database/schema';
 import { CreateMedicationBatchDto } from '../dto/create-medication-batch.dto';
 import { MedicationBatchRepositoryInterface } from './medication-batch.repository.interface';
 
 @Injectable()
 export class MedicationBatchRepository
   implements MedicationBatchRepositoryInterface {
+  constructor(
+    @Inject(DB)
+    private readonly db: any,
+  ) {}
+
   async create(data: CreateMedicationBatchDto) {
-    const [batch] = await db
+    const [batch] = await this.db
       .insert(medicationBatches)
       .values({
         medicationId: data.medicationId,
@@ -23,11 +28,11 @@ export class MedicationBatchRepository
   }
 
   async findAll() {
-    return db.select().from(medicationBatches);
+    return this.db.select().from(medicationBatches);
   }
 
   async findOne(id: string) {
-    const [batch] = await db
+    const [batch] = await this.db
       .select()
       .from(medicationBatches)
       .where(eq(medicationBatches.id, id));
@@ -36,7 +41,7 @@ export class MedicationBatchRepository
   }
 
   async findByMedicationId(medicationId: string) {
-    return db
+    return this.db
       .select()
       .from(medicationBatches)
       .where(eq(medicationBatches.medicationId, medicationId));
