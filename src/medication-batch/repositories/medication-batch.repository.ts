@@ -3,6 +3,7 @@ import { eq } from 'drizzle-orm';
 import { DB } from '../../database/database.module';
 import { medicationBatches } from '../../database/schema';
 import { CreateMedicationBatchDto } from '../dto/create-medication-batch.dto';
+import { UpdateMedicationBatchDto } from '../dto/update-medication-batch.dto';
 import { MedicationBatchRepositoryInterface } from './medication-batch.repository.interface';
 
 @Injectable()
@@ -11,7 +12,7 @@ export class MedicationBatchRepository
   constructor(
     @Inject(DB)
     private readonly db: any,
-  ) {}
+  ) { }
 
   async create(data: CreateMedicationBatchDto) {
     const [batch] = await this.db
@@ -47,4 +48,20 @@ export class MedicationBatchRepository
       .where(eq(medicationBatches.medicationId, medicationId));
   }
 
+  async update(id: string, data: UpdateMedicationBatchDto) {
+    const updateData = {
+      ...data,
+      expirationDate: data.expirationDate
+        ? new Date(data.expirationDate)
+        : undefined,
+    };
+
+    const [batch] = await this.db
+      .update(medicationBatches)
+      .set(updateData)
+      .where(eq(medicationBatches.id, id))
+      .returning();
+
+    return batch;
+  }
 }

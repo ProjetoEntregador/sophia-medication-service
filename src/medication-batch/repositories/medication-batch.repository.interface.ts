@@ -1,4 +1,5 @@
 import { CreateMedicationBatchDto } from '../dto/create-medication-batch.dto';
+import { UpdateMedicationBatchDto } from '../dto/update-medication-batch.dto';
 
 export abstract class MedicationBatchRepositoryInterface {
   abstract create(data: CreateMedicationBatchDto);
@@ -10,4 +11,6 @@ export abstract class MedicationBatchRepositoryInterface {
   abstract findByMedicationId(
     medicationId: string,
   );
+
+  abstract update(id: string, data: UpdateMedicationBatchDto);
 }

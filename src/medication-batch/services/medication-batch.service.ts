@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMedicationBatchDto } from '../dto/create-medication-batch.dto';
-
+import { UpdateMedicationBatchDto } from '../dto/update-medication-batch.dto';
 import { CreateMedicationBatchUseCase } from '../use-cases/create-medication-batch.use-case';
 import { FindAllMedicationBatchUseCase } from '../use-cases/find-all-medication-batch.use-case';
 import { FindOneMedicationBatchUseCase } from '../use-cases/find-one-medication-batch.use-case';
 import { FindBatchesByMedicationIdUseCase } from '../use-cases/find-batches-by-medication-id.use-case';
+import { UpdateMedicationBatchUseCase } from '../use-cases/update-medication-batch.use-case';
 
 @Injectable()
 export class MedicationBatchService {
@@ -13,7 +14,8 @@ export class MedicationBatchService {
     private readonly findAllMedicationBatchUseCase: FindAllMedicationBatchUseCase,
     private readonly findOneMedicationBatchUseCase: FindOneMedicationBatchUseCase,
     private readonly findBatchesByMedicationIdUseCase: FindBatchesByMedicationIdUseCase,
-  ) {}
+    private readonly updateMedicationBatchUseCase: UpdateMedicationBatchUseCase,
+  ) { }
 
   async create(data: CreateMedicationBatchDto) {
     return this.createMedicationBatchUseCase.execute(data);
@@ -32,4 +34,9 @@ export class MedicationBatchService {
       medicationId,
     );
   }
+
+  async update(id: string, data: UpdateMedicationBatchDto) {
+    return await this.updateMedicationBatchUseCase.execute(id, data);
+  }
+
 }
