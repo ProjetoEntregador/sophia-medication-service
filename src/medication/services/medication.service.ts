@@ -3,6 +3,9 @@ import { CreateMedicationDto } from '../dto/create-medication.dto';
 import { CreateMedicationUseCase } from '../use-cases/create-medication.use-case';
 import { FindAllMedicationsUseCase } from '../use-cases/find-all-medications.use-case';
 import { FindOneMedicationUseCase } from '../use-cases/find-one-medication.use-case';
+import { UpdateMedicationDto } from '../dto/update-medication.dto';
+import { UpdateMedicationUseCase } from '../use-cases/update-medication.use-case';
+
 
 @Injectable()
 export class MedicationService {
@@ -10,6 +13,7 @@ export class MedicationService {
     private readonly createMedicationUseCase: CreateMedicationUseCase,
     private readonly findAllMedicationsUseCase: FindAllMedicationsUseCase,
     private readonly findOneMedicationUseCase: FindOneMedicationUseCase,
+    private readonly updateMedicationUseCase: UpdateMedicationUseCase,
   ) {}
 
   create(data: CreateMedicationDto) {
@@ -23,4 +27,8 @@ export class MedicationService {
   findOne(id: string) {
     return this.findOneMedicationUseCase.execute(id);
   }
+  
+  update(id: string, data: UpdateMedicationDto) {
+  return this.updateMedicationUseCase.execute(id, data);
+}
 }

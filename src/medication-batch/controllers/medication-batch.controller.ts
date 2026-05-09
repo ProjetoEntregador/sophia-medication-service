@@ -1,12 +1,13 @@
-import { Body, Controller, Post, Get, Param} from '@nestjs/common';
+import { Body, Controller, Post, Get, Param, Patch } from '@nestjs/common';
 import { MedicationBatchService } from '../services/medication-batch.service';
 import { CreateMedicationBatchDto } from '../dto/create-medication-batch.dto';
+import { UpdateMedicationBatchDto } from '../dto/update-medication-batch.dto';
 
 @Controller('medication-batches')
 export class MedicationBatchController {
   constructor(
     private readonly medicationBatchService: MedicationBatchService,
-  ) {}
+  ) { }
 
   @Post()
   create(@Body() data: CreateMedicationBatchDto) {
@@ -26,5 +27,13 @@ export class MedicationBatchController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.medicationBatchService.findOne(id);
+  }
+
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() data: UpdateMedicationBatchDto,
+  ) {
+    return this.medicationBatchService.update(id, data);
   }
 }
