@@ -55,4 +55,9 @@ export class MedicationRepository implements MedicationRepositoryInterface {
     return medication as MedicationEntity | undefined;
   }
   
+  async delete(id: string): Promise<void> {
+  await this.db
+    .delete(medications)
+    .where(eq(medications.id, id));
+}
 }

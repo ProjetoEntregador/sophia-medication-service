@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Patch } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Patch, Delete } from '@nestjs/common';
 import { MedicationService } from '../services/medication.service';
 import { CreateMedicationDto } from '../dto/create-medication.dto';
 import { UpdateMedicationDto } from '../dto/update-medication.dto';
@@ -32,5 +32,10 @@ export class MedicationController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.medicationService.findOne(id);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.medicationService.delete(id);
   }
 }
