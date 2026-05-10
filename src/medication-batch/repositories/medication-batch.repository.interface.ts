@@ -13,4 +13,6 @@ export abstract class MedicationBatchRepositoryInterface {
   );
 
   abstract update(id: string, data: UpdateMedicationBatchDto);
+
+  abstract delete(id: string): Promise<void>;
 }
