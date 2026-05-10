@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Get, Param, Patch } from '@nestjs/common';
+import { Body, Controller, Post, Get, Param, Patch, Delete } from '@nestjs/common';
 import { MedicationBatchService } from '../services/medication-batch.service';
 import { CreateMedicationBatchDto } from '../dto/create-medication-batch.dto';
 import { UpdateMedicationBatchDto } from '../dto/update-medication-batch.dto';
@@ -35,5 +35,10 @@ export class MedicationBatchController {
     @Body() data: UpdateMedicationBatchDto,
   ) {
     return this.medicationBatchService.update(id, data);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.medicationBatchService.delete(id);
   }
 }

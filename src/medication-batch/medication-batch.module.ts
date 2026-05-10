@@ -11,6 +11,7 @@ import { FindAllMedicationBatchUseCase } from './use-cases/find-all-medication-b
 import { FindOneMedicationBatchUseCase } from './use-cases/find-one-medication-batch.use-case';
 import { FindBatchesByMedicationIdUseCase } from './use-cases/find-batches-by-medication-id.use-case';
 import { UpdateMedicationBatchUseCase } from './use-cases/update-medication-batch.use-case';
+import { DeleteMedicationBatchUseCase } from './use-cases/delete-medication-batch.use-case';
 
 @Module({
   controllers: [MedicationBatchController],
@@ -21,6 +22,7 @@ import { UpdateMedicationBatchUseCase } from './use-cases/update-medication-batc
     FindOneMedicationBatchUseCase,
     FindBatchesByMedicationIdUseCase,
     UpdateMedicationBatchUseCase,
+    DeleteMedicationBatchUseCase,
     {
       provide: MedicationBatchRepositoryInterface,
       useClass: MedicationBatchRepository,

@@ -64,4 +64,10 @@ export class MedicationBatchRepository
 
     return batch;
   }
+
+  async delete(id: string): Promise<void> {
+    await this.db
+      .delete(medicationBatches)
+      .where(eq(medicationBatches.id, id));
+  }
 }
