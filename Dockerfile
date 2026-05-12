@@ -1,0 +1,16 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY package.json yarn.lock ./
+
+RUN yarn config set network-timeout 600000 -g
+RUN yarn install
+
+COPY . .
+
+RUN yarn build
+
+EXPOSE 3000
+
+CMD ["node", "dist/src/main.js"]

@@ -1,8 +1,19 @@
 services:
+  app:
+    build: .
+    container_name: sophia-medication-service
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://medication_user:medication_password@postgres:5432/medication_db
+      PORT: 3000
+    depends_on:
+      - postgres
+    restart: always
+
   postgres:
     image: postgres:15
     container_name: medication-postgres
-    restart: always
     ports:
       - "5433:5432"
     environment:
@@ -11,6 +22,7 @@ services:
       POSTGRES_DB: medication_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    restart: always
 
 volumes:
   postgres_data:
