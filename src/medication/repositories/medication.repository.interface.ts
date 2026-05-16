@@ -15,5 +15,7 @@ export abstract class MedicationRepositoryInterface {
     id: string,
   ): Promise<MedicationEntity | undefined>;
 
+  abstract findByPharmacyId(pharmacyId: number): Promise<MedicationEntity[]>;
+
   abstract delete(id: string): Promise<void>;
 }

@@ -11,6 +11,7 @@ import { MedicationRepository } from './repositories/medication.repository';
 import { MedicationRepositoryInterface } from './repositories/medication.repository.interface';
 import { MedicationBatchRepositoryInterface } from '../medication-batch/repositories/medication-batch.repository.interface';
 import { MedicationBatchRepository } from '../medication-batch/repositories/medication-batch.repository';
+import { FindMedicationsByPharmacyIdUseCase } from './use-cases/find-medications-by-pharmacy-id.use-case';
 
 @Module({
   controllers: [MedicationController],
@@ -21,6 +22,7 @@ import { MedicationBatchRepository } from '../medication-batch/repositories/medi
     FindAllMedicationsUseCase,
     FindOneMedicationUseCase,
     DeleteMedicationUseCase,
+    FindMedicationsByPharmacyIdUseCase,
     {
       provide: MedicationRepositoryInterface,
       useClass: MedicationRepository,
