@@ -1,0 +1,1 @@
+ALTER TABLE "medications" ADD COLUMN "pharmacy_id" integer NOT NULL;

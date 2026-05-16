@@ -11,6 +11,8 @@ import {
 export const medications = pgTable('medications', {
   id: uuid('id').defaultRandom().primaryKey(),
 
+  pharmacyId: integer('pharmacy_id').notNull(),
+
   name: varchar('name', { length: 255 }).notNull(),
 
   dosage: varchar('dosage', { length: 100 }).notNull(),

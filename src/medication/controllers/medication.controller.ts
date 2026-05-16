@@ -1,13 +1,14 @@
-import { Body, Controller, Get, Param, Post, Patch, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Patch, Delete, ParseIntPipe } from '@nestjs/common';
 import { MedicationService } from '../services/medication.service';
 import { CreateMedicationDto } from '../dto/create-medication.dto';
 import { UpdateMedicationDto } from '../dto/update-medication.dto';
 import { UpdateMedicationUseCase } from '../use-cases/update-medication.use-case';
-
+import { FindMedicationsByPharmacyIdUseCase } from '../use-cases/find-medications-by-pharmacy-id.use-case';
 @Controller('medications')
 export class MedicationController {
   constructor(
     private readonly medicationService: MedicationService,
+    private readonly findMedicationsByPharmacyIdUseCase: FindMedicationsByPharmacyIdUseCase,
     private readonly updateMedicationUseCase: UpdateMedicationUseCase,
   ) { }
 
@@ -32,6 +33,13 @@ export class MedicationController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.medicationService.findOne(id);
+  }
+
+  @Get('pharmacy/:pharmacyId')
+  async findByPharmacyId(
+    @Param('pharmacyId', ParseIntPipe) pharmacyId: number,
+  ) {
+    return this.findMedicationsByPharmacyIdUseCase.execute(pharmacyId);
   }
 
   @Delete(':id')

@@ -17,6 +17,7 @@ export class MedicationRepository implements MedicationRepositoryInterface {
     const [medication] = await this.db
       .insert(medications)
       .values({
+        pharmacyId: data.pharmacyId,
         name: data.name,
         dosage: data.dosage,
         pharmaceuticalForm: data.pharmaceuticalForm,
@@ -32,14 +33,14 @@ export class MedicationRepository implements MedicationRepositoryInterface {
   }
 
   async update(id: string, data: UpdateMedicationDto) {
-  const [medication] = await this.db
-    .update(medications)
-    .set(data)
-    .where(eq(medications.id, id))
-    .returning();
+    const [medication] = await this.db
+      .update(medications)
+      .set(data)
+      .where(eq(medications.id, id))
+      .returning();
 
-  return medication;
-}
+    return medication;
+  }
   async findAll(): Promise<MedicationEntity[]> {
     const result = await this.db.select().from(medications);
 
@@ -54,10 +55,17 @@ export class MedicationRepository implements MedicationRepositoryInterface {
 
     return medication as MedicationEntity | undefined;
   }
-  
+
+  async findByPharmacyId(pharmacyId: number) {
+    return await this.db
+      .select()
+      .from(medications)
+      .where(eq(medications.pharmacyId, pharmacyId));
+  }
+
   async delete(id: string): Promise<void> {
-  await this.db
-    .delete(medications)
-    .where(eq(medications.id, id));
-}
+    await this.db
+      .delete(medications)
+      .where(eq(medications.id, id));
+  }
 }
