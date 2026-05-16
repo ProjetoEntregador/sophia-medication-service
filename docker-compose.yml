@@ -1,25 +1,22 @@
 services:
-  app:
+  sophia-medication-service:
     build: .
     container_name: sophia-medication-service
     ports:
-      - "3000:3000"
-    environment:
-      DATABASE_URL: postgres://medication_user:medication_password@postgres:5432/medication_db
-      PORT: 3000
+      - '3003:3000'
     depends_on:
-      - postgres
+      - medication-postgres
     restart: always
 
-  postgres:
+  medication-postgres:
     image: postgres:15
     container_name: medication-postgres
     ports:
-      - "5433:5432"
+      - '5434:5432'
     environment:
-      POSTGRES_USER: medication_user
-      POSTGRES_PASSWORD: medication_password
-      POSTGRES_DB: medication_db
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_NAME}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: always
