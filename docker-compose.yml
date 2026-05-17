@@ -2,6 +2,8 @@ services:
   sophia-medication-service:
     build: .
     container_name: sophia-medication-service
+    env_file:
+      - .env
     ports:
       - '3003:3000'
     depends_on:
@@ -11,6 +13,8 @@ services:
   medication-postgres:
     image: postgres:15
     container_name: medication-postgres
+    env_file:
+      - .env
     ports:
       - '5434:5432'
     environment:
@@ -18,8 +22,13 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_DB=${DB_NAME}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - medication_postgres_data:/var/lib/postgresql/data
     restart: always
 
+networks:
+  net1:
+    external: true
+    name: net1
+
 volumes:
-  postgres_data:
+  medication_postgres_data:
