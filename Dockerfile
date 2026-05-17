@@ -11,6 +11,9 @@ COPY . .
 
 RUN yarn build
 
+COPY scripts/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 EXPOSE 3000
 
-CMD ["node", "dist/src/main.js"]
+CMD ["/entrypoint.sh"]
