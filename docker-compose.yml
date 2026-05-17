@@ -18,8 +18,8 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_DB=${DB_NAME}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - medication_postgres_data:/var/lib/postgresql/data
     restart: always
 
 volumes:
-  postgres_data:
+  medication_postgres_data:
