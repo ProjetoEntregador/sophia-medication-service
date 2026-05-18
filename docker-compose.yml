@@ -9,6 +9,8 @@ services:
     depends_on:
       - medication-postgres
     restart: always
+    networks:
+      - net1
 
   medication-postgres:
     image: postgres:15
@@ -24,6 +26,8 @@ services:
     volumes:
       - medication_postgres_data:/var/lib/postgresql/data
     restart: always
+    networks:
+      - net1
 
 networks:
   net1:
