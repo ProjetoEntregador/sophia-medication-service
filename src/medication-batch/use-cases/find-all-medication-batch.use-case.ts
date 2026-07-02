@@ -8,7 +8,7 @@ export class FindAllMedicationBatchUseCase {
     private readonly medicationBatchRepository: MedicationBatchRepositoryInterface,
   ) {}
 
-  async execute() {
-    return this.medicationBatchRepository.findAll();
+  async execute(offset: number, size: number) {
+    return this.medicationBatchRepository.findAll(offset, size);
   }
 }
