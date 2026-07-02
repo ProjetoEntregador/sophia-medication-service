@@ -22,8 +22,11 @@ export class MedicationService {
     return this.createMedicationUseCase.execute(data);
   }
 
-  findAll() {
-    return this.findAllMedicationsUseCase.execute();
+  findAll(offset: number, size: number) {
+      return this.findAllMedicationsUseCase.execute(
+        offset,
+        size
+      );
   }
 
   findOne(id: string) {

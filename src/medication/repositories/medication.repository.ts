@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { DB } from '../../database/database.module';
 import { medications } from '../../database/schema';
 import { CreateMedicationDto } from '../dto/create-medication.dto';
@@ -41,10 +41,23 @@ export class MedicationRepository implements MedicationRepositoryInterface {
 
     return medication;
   }
-  async findAll(): Promise<MedicationEntity[]> {
-    const result = await this.db.select().from(medications);
+  async findAll(offset: number, size: number): Promise<any> {
+    const items = await this.db
+      .select()
+      .from(medications)
+      .limit(size)
+      .offset(offset);
 
-    return result as MedicationEntity[];
+    const totalResult = await this.db
+      .select({
+        total: sql<number>`count(*)`,
+      })
+      .from(medications);
+
+    return {
+      items: items as MedicationEntity[],
+      total: Number(totalResult[0].total),
+    };
   }
 
   async findOne(id: string): Promise<MedicationEntity | undefined> {

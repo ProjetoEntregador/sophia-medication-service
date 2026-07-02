@@ -9,7 +9,7 @@ export abstract class MedicationRepositoryInterface {
 
   abstract update(id: string, data: UpdateMedicationDto): Promise<any> | undefined;
 
-  abstract findAll(): Promise<MedicationEntity[]>;
+  abstract findAll(offset: number, size: number): Promise<any>;
 
   abstract findOne(
     id: string,

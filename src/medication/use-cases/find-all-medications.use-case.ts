@@ -7,7 +7,10 @@ export class FindAllMedicationsUseCase {
     private readonly medicationRepository: MedicationRepositoryInterface,
   ) {}
 
-  async execute() {
-    return this.medicationRepository.findAll();
+  async execute(offset: number, size: number) {
+    return this.medicationRepository.findAll(
+      offset,
+      size
+    );
   }
 }
