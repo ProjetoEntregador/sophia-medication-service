@@ -34,5 +34,6 @@ import { PharmacyPermissionService } from '../pharmacy/pharmacy-permission.servi
       useClass: MedicationBatchRepository,
     },
   ],
+  exports: [MedicationService],
 })
 export class MedicationModule {}

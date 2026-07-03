@@ -12,11 +12,15 @@ import { FindOneMedicationBatchUseCase } from './use-cases/find-one-medication-b
 import { FindBatchesByMedicationIdUseCase } from './use-cases/find-batches-by-medication-id.use-case';
 import { UpdateMedicationBatchUseCase } from './use-cases/update-medication-batch.use-case';
 import { DeleteMedicationBatchUseCase } from './use-cases/delete-medication-batch.use-case';
+import { MedicationModule } from '../medication/medication.module';
+import { PharmacyPermissionService } from '../pharmacy/pharmacy-permission.service';
 
 @Module({
+  imports: [MedicationModule],
   controllers: [MedicationBatchController],
   providers: [
     MedicationBatchService,
+    PharmacyPermissionService,
     CreateMedicationBatchUseCase,
     FindAllMedicationBatchUseCase,
     FindOneMedicationBatchUseCase,

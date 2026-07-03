@@ -1,4 +1,15 @@
-import { Body, Controller, Get, Param, Post, Patch, Delete, ParseIntPipe, Query, Headers, } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Patch,
+  Delete,
+  ParseIntPipe,
+  Query,
+  Headers,
+} from '@nestjs/common';
 import { MedicationService } from '../services/medication.service';
 import { CreateMedicationDto } from '../dto/create-medication.dto';
 import { UpdateMedicationDto } from '../dto/update-medication.dto';
@@ -29,11 +40,31 @@ export class MedicationController {
   }
 
   @Get()
-  findAll(
+  async findAll(
     @Query('offset') offset = '0',
     @Query('size') size = '10',
+    @Headers('authorization') authorization: string,
   ) {
-    return this.medicationService.findAll(Number(offset), Number(size));
+    const result = await this.medicationService.findAll(
+      Number(offset),
+      Number(size),
+    );
+    const pharmacyIds: number[] = [
+      ...new Set<number>(
+        result.items.map((medication) => medication.pharmacyId),
+      ),
+    ];
+
+    await Promise.all(
+      pharmacyIds.map((pharmacyId) =>
+        this.pharmacyPermissionService.validatePermission(
+          pharmacyId,
+          authorization,
+        ),
+      ),
+    );
+
+    return result;
   }
 
   @Get('pharmacy/:pharmacyId')
