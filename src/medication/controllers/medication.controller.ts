@@ -70,13 +70,7 @@ export class MedicationController {
   @Get('pharmacy/:pharmacyId')
   async findByPharmacyId(
     @Param('pharmacyId', ParseIntPipe) pharmacyId: number,
-    @Headers('authorization') authorization: string,
   ) {
-    await this.pharmacyPermissionService.validatePermission(
-      pharmacyId,
-      authorization,
-    );
-
     return this.findMedicationsByPharmacyIdUseCase.execute(pharmacyId);
   }
 
