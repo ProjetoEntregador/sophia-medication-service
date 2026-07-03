@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Get, Param, Patch, Delete } from '@nestjs/common';
+import { Body, Controller, Post, Get, Param, Patch, Delete, Query } from '@nestjs/common';
 import { MedicationBatchService } from '../services/medication-batch.service';
 import { CreateMedicationBatchDto } from '../dto/create-medication-batch.dto';
 import { UpdateMedicationBatchDto } from '../dto/update-medication-batch.dto';
@@ -15,13 +15,27 @@ export class MedicationBatchController {
   }
 
   @Get()
-  findAll() {
-    return this.medicationBatchService.findAll();
-  }
+    findAll(
+      @Query('offset') offset = '0',
+      @Query('size') size = '10',
+    ) {
+      return this.medicationBatchService.findAll(
+        Number(offset),
+        Number(size)
+      );
+    }
 
   @Get('medication/:medicationId')
-  findByMedicationId(@Param('medicationId') medicationId: string) {
-    return this.medicationBatchService.findByMedicationId(medicationId);
+  findByMedicationId(
+    @Param('medicationId') medicationId: string,
+    @Query('offset') offset = '0',
+    @Query('size') size = '10',
+  ) {
+    return this.medicationBatchService.findByMedicationId(
+      medicationId,
+      Number(offset),
+      Number(size),
+    );
   }
 
   @Get(':id')

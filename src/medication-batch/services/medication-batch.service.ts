@@ -23,17 +23,26 @@ export class MedicationBatchService {
     return this.createMedicationBatchUseCase.execute(data);
   }
 
-  async findAll() {
-    return this.findAllMedicationBatchUseCase.execute();
+  async findAll(offset: number, size: number) {
+    return this.findAllMedicationBatchUseCase.execute(
+      offset,
+      size
+    );
   }
 
   async findOne(id: string) {
     return this.findOneMedicationBatchUseCase.execute(id);
   }
 
-  async findByMedicationId(medicationId: string) {
+  async findByMedicationId(
+    medicationId: string,
+    offset: number,
+    size: number,
+  ) {
     return this.findBatchesByMedicationIdUseCase.execute(
       medicationId,
+      offset,
+      size,
     );
   }
 
@@ -43,6 +52,6 @@ export class MedicationBatchService {
 
   async delete(id: string) {
   return this.deleteMedicationBatchUseCase.execute(id);
-}
+  }
 
 }

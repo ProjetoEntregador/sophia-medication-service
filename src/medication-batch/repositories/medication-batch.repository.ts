@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { eq } from 'drizzle-orm';
+import { count, eq } from 'drizzle-orm';
 import { DB } from '../../database/database.module';
 import { medicationBatches } from '../../database/schema';
 import { CreateMedicationBatchDto } from '../dto/create-medication-batch.dto';
@@ -28,8 +28,23 @@ export class MedicationBatchRepository
     return batch;
   }
 
-  async findAll() {
-    return this.db.select().from(medicationBatches);
+  async findAll(offset: number, size: number) {
+    const data = await this.db
+      .select()
+      .from(medicationBatches)
+      .limit(size)
+      .offset(offset);
+
+    const [{ total }] = await this.db
+      .select({ total: count() })
+      .from(medicationBatches);
+
+    return {
+      data,
+      total,
+      offset,
+      size,
+    };
   }
 
   async findOne(id: string) {
@@ -41,11 +56,29 @@ export class MedicationBatchRepository
     return batch;
   }
 
-  async findByMedicationId(medicationId: string) {
-    return this.db
+  async findByMedicationId(
+    medicationId: string,
+    offset: number,
+    size: number,
+  ) {
+    const data = await this.db
       .select()
       .from(medicationBatches)
+      .where(eq(medicationBatches.medicationId, medicationId))
+      .limit(size)
+      .offset(offset);
+
+    const [{ total }] = await this.db
+      .select({ total: count() })
+      .from(medicationBatches)
       .where(eq(medicationBatches.medicationId, medicationId));
+
+    return {
+      data,
+      total,
+      offset,
+      size,
+    };
   }
 
   async update(id: string, data: UpdateMedicationBatchDto) {

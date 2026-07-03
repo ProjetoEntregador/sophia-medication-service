@@ -8,9 +8,15 @@ export class FindBatchesByMedicationIdUseCase {
     private readonly medicationBatchRepository: MedicationBatchRepositoryInterface,
   ) {}
 
-  async execute(medicationId: string) {
+  async execute(
+    medicationId: string,
+    offset: number,
+    size: number,
+  ) {
     return this.medicationBatchRepository.findByMedicationId(
       medicationId,
+      offset,
+      size,
     );
   }
 }
