@@ -16,7 +16,7 @@ export class DeleteMedicationUseCase {
       throw new NotFoundException('Medicamento não encontrado');
     }
 
-    const batches = await this.medicationBatchRepository.findByMedicationId(id);
+    const batches = await this.medicationBatchRepository.findByMedicationId(id, 0, 1000);
 
     if (batches.length > 0) {
       throw new BadRequestException(
