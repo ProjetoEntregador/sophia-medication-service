@@ -12,11 +12,13 @@ import { MedicationRepositoryInterface } from './repositories/medication.reposit
 import { MedicationBatchRepositoryInterface } from '../medication-batch/repositories/medication-batch.repository.interface';
 import { MedicationBatchRepository } from '../medication-batch/repositories/medication-batch.repository';
 import { FindMedicationsByPharmacyIdUseCase } from './use-cases/find-medications-by-pharmacy-id.use-case';
+import { PharmacyPermissionService } from '../pharmacy/pharmacy-permission.service';
 
 @Module({
   controllers: [MedicationController],
   providers: [
     MedicationService,
+    PharmacyPermissionService,
     CreateMedicationUseCase,
     UpdateMedicationUseCase,
     FindAllMedicationsUseCase,
@@ -27,7 +29,6 @@ import { FindMedicationsByPharmacyIdUseCase } from './use-cases/find-medications
       provide: MedicationRepositoryInterface,
       useClass: MedicationRepository,
     },
-
     {
       provide: MedicationBatchRepositoryInterface,
       useClass: MedicationBatchRepository,
