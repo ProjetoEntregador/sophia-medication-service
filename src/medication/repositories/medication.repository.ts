@@ -12,7 +12,7 @@ export class MedicationRepository implements MedicationRepositoryInterface {
   constructor(
     @Inject(DB)
     private readonly db: any,
-  ) { }
+  ) {}
   async create(data: CreateMedicationDto): Promise<MedicationEntity> {
     const [medication] = await this.db
       .insert(medications)
@@ -69,16 +69,28 @@ export class MedicationRepository implements MedicationRepositoryInterface {
     return medication as MedicationEntity | undefined;
   }
 
-  async findByPharmacyId(pharmacyId: number) {
-    return await this.db
+  async findByPharmacyId(pharmacyId: number, offset: number, size: number) {
+    const items = await this.db
       .select()
       .from(medications)
+      .where(eq(medications.pharmacyId, pharmacyId))
+      .limit(size)
+      .offset(offset);
+
+    const totalResult = await this.db
+      .select({
+        total: sql<number>`count(*)`,
+      })
+      .from(medications)
       .where(eq(medications.pharmacyId, pharmacyId));
+
+    return {
+      items: items as MedicationEntity[],
+      total: Number(totalResult[0].total),
+    };
   }
 
   async delete(id: string): Promise<void> {
-    await this.db
-      .delete(medications)
-      .where(eq(medications.id, id));
+    await this.db.delete(medications).where(eq(medications.id, id));
   }
 }
