@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { MedicationModule } from './medication/medication.module';
 import { MedicationBatchModule } from './medication-batch/medication-batch.module';
 import { DatabaseModule } from './database/database.module';
+import { RabbitMQModule } from './messaging/messaging.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { DatabaseModule } from './database/database.module';
       isGlobal: true,
     }),
     DatabaseModule,
+    RabbitMQModule,
     MedicationModule,
     MedicationBatchModule,
   ],

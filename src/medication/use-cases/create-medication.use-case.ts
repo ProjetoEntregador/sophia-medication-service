@@ -9,9 +9,7 @@ export class CreateMedicationUseCase {
     private readonly medicationRepository: MedicationRepositoryInterface,
   ) {}
 
-  async execute(
-    data: CreateMedicationDto,
-  ): Promise<MedicationEntity> {
+  async execute(data: CreateMedicationDto): Promise<MedicationEntity> {
     return this.medicationRepository.create(data);
   }
 }
