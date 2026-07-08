@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { MedicationRepositoryInterface } from '../repositories/medication.repository.interface';
 import { MedicationBatchRepositoryInterface } from '../../medication-batch/repositories/medication-batch.repository.interface';
 
@@ -16,13 +16,7 @@ export class DeleteMedicationUseCase {
       throw new NotFoundException('Medicamento não encontrado');
     }
 
-    const batches = await this.medicationBatchRepository.findByMedicationId(id, 0, 1000);
-
-    if (batches.length > 0) {
-      throw new BadRequestException(
-        'Não é possível excluir este medicamento, pois existem lotes vinculados a ele.',
-      );
-    }
+    await this.medicationBatchRepository.deleteByMedicationId(id);
 
     await this.medicationRepository.delete(id);
   }

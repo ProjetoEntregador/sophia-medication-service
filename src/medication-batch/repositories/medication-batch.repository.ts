@@ -103,4 +103,10 @@ export class MedicationBatchRepository
       .delete(medicationBatches)
       .where(eq(medicationBatches.id, id));
   }
+
+  async deleteByMedicationId(medicationId: string): Promise<void> {
+    await this.db
+      .delete(medicationBatches)
+      .where(eq(medicationBatches.medicationId, medicationId));
+  }
 }
