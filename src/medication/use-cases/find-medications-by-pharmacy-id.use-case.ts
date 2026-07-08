@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { MedicationRepositoryInterface } from '../repositories/medication.repository.interface';
-import { PharmacyPermissionService } from 'src/pharmacy/pharmacy-permission.service';
+import { PharmacyPermissionService } from '../../pharmacy/pharmacy-permission.service';
 
 @Injectable()
 export class FindMedicationsByPharmacyIdUseCase {

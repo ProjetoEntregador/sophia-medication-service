@@ -47,7 +47,7 @@ export const medicationBatches = pgTable('medication_batches', {
   id: uuid('id').defaultRandom().primaryKey(),
 
   medicationId: uuid('medication_id')
-    .references(() => medications.id)
+    .references(() => medications.id, { onDelete: 'cascade' })
     .notNull(),
 
   batchCode: varchar('batch_code', {
