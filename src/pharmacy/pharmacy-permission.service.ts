@@ -22,7 +22,7 @@ export class PharmacyPermissionService {
 
     try {
       response = await fetch(
-        `${this.pharmacyServiceUrl}/pharmacy/${pharmacyId}/permissions`,
+        `${this.pharmacyServiceUrl}/pharmacy/${pharmacyId}/permissions/check`,
         {
           method: 'GET',
           headers: {
