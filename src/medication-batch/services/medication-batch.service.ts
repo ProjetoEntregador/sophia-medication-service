@@ -17,28 +17,21 @@ export class MedicationBatchService {
     private readonly findBatchesByMedicationIdUseCase: FindBatchesByMedicationIdUseCase,
     private readonly updateMedicationBatchUseCase: UpdateMedicationBatchUseCase,
     private readonly deleteMedicationBatchUseCase: DeleteMedicationBatchUseCase,
-  ) { }
+  ) {}
 
-  async create(data: CreateMedicationBatchDto) {
-    return this.createMedicationBatchUseCase.execute(data);
+  async create(data: CreateMedicationBatchDto, authorization?: string) {
+    return this.createMedicationBatchUseCase.execute(data, authorization);
   }
 
   async findAll(offset: number, size: number) {
-    return this.findAllMedicationBatchUseCase.execute(
-      offset,
-      size
-    );
+    return this.findAllMedicationBatchUseCase.execute(offset, size);
   }
 
   async findOne(id: string) {
     return this.findOneMedicationBatchUseCase.execute(id);
   }
 
-  async findByMedicationId(
-    medicationId: string,
-    offset: number,
-    size: number,
-  ) {
+  async findByMedicationId(medicationId: string, offset: number, size: number) {
     return this.findBatchesByMedicationIdUseCase.execute(
       medicationId,
       offset,
@@ -46,12 +39,19 @@ export class MedicationBatchService {
     );
   }
 
-  async update(id: string, data: UpdateMedicationBatchDto) {
-    return await this.updateMedicationBatchUseCase.execute(id, data);
+  async update(
+    id: string,
+    data: UpdateMedicationBatchDto,
+    authorization?: string,
+  ) {
+    return await this.updateMedicationBatchUseCase.execute(
+      id,
+      data,
+      authorization,
+    );
   }
 
-  async delete(id: string) {
-  return this.deleteMedicationBatchUseCase.execute(id);
+  async delete(id: string, authorization?: string) {
+    return this.deleteMedicationBatchUseCase.execute(id, authorization);
   }
-
 }

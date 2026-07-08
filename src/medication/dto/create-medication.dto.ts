@@ -1,11 +1,17 @@
-import { IsBoolean, IsOptional, IsString, IsNumber, Min, IsInt } from 'class-validator';
+import {
+  IsBoolean,
+  IsOptional,
+  IsString,
+  IsNumber,
+  Min,
+  IsInt,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateMedicationDto {
-
   @IsInt()
   pharmacyId!: number;
-  
+
   @IsString()
   name!: string;
 

@@ -31,9 +31,7 @@ export class PharmacyPermissionService {
         },
       );
     } catch {
-      throw new ServiceUnavailableException(
-        'Could not reach pharmacy service',
-      );
+      throw new ServiceUnavailableException('Could not reach pharmacy service');
     }
 
     if (response.status === 401) {
