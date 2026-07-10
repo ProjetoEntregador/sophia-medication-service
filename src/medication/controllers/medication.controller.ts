@@ -13,7 +13,6 @@ import {
 import { MedicationService } from '../services/medication.service';
 import { CreateMedicationDto } from '../dto/create-medication.dto';
 import { UpdateMedicationDto } from '../dto/update-medication.dto';
-import { UpdateMedicationUseCase } from '../use-cases/update-medication.use-case';
 import { FindMedicationsByPharmacyIdUseCase } from '../use-cases/find-medications-by-pharmacy-id.use-case';
 import { PharmacyPermissionService } from '../../pharmacy/pharmacy-permission.service';
 
@@ -23,7 +22,6 @@ export class MedicationController {
     private readonly pharmacyPermissionService: PharmacyPermissionService,
     private readonly medicationService: MedicationService,
     private readonly findMedicationsByPharmacyIdUseCase: FindMedicationsByPharmacyIdUseCase,
-    private readonly updateMedicationUseCase: UpdateMedicationUseCase,
   ) {}
 
   @Post()
@@ -36,7 +34,7 @@ export class MedicationController {
       authorization,
     );
 
-    return this.medicationService.create(data);
+    return this.medicationService.create(data, authorization);
   }
 
   @Get()
@@ -110,7 +108,7 @@ export class MedicationController {
       authorization,
     );
 
-    return this.updateMedicationUseCase.execute(id, data);
+    return this.medicationService.update(id, data, authorization);
   }
 
   @Delete(':id')
@@ -125,6 +123,6 @@ export class MedicationController {
       authorization,
     );
 
-    return this.medicationService.delete(id);
+    return this.medicationService.delete(id, authorization);
   }
 }

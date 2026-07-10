@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { count, eq } from 'drizzle-orm';
+import { count, eq, inArray } from 'drizzle-orm';
 import { DB } from '../../database/database.module';
 import { medicationBatches } from '../../database/schema';
 import { CreateMedicationBatchDto } from '../dto/create-medication-batch.dto';
@@ -7,12 +7,11 @@ import { UpdateMedicationBatchDto } from '../dto/update-medication-batch.dto';
 import { MedicationBatchRepositoryInterface } from './medication-batch.repository.interface';
 
 @Injectable()
-export class MedicationBatchRepository
-  implements MedicationBatchRepositoryInterface {
+export class MedicationBatchRepository implements MedicationBatchRepositoryInterface {
   constructor(
     @Inject(DB)
     private readonly db: any,
-  ) { }
+  ) {}
 
   async create(data: CreateMedicationBatchDto) {
     const [batch] = await this.db
@@ -56,11 +55,7 @@ export class MedicationBatchRepository
     return batch;
   }
 
-  async findByMedicationId(
-    medicationId: string,
-    offset: number,
-    size: number,
-  ) {
+  async findByMedicationId(medicationId: string, offset: number, size: number) {
     const data = await this.db
       .select()
       .from(medicationBatches)
@@ -81,6 +76,15 @@ export class MedicationBatchRepository
     };
   }
 
+  async findAllByMedicationId(medicationId: string) {
+    const data = await this.db
+      .select()
+      .from(medicationBatches)
+      .where(eq(medicationBatches.medicationId, medicationId));
+
+    return data;
+  }
+
   async update(id: string, data: UpdateMedicationBatchDto) {
     const updateData = {
       ...data,
@@ -99,9 +103,13 @@ export class MedicationBatchRepository
   }
 
   async delete(id: string): Promise<void> {
+    await this.db.delete(medicationBatches).where(eq(medicationBatches.id, id));
+  }
+
+  async deleteMany(ids: string[]): Promise<void> {
     await this.db
       .delete(medicationBatches)
-      .where(eq(medicationBatches.id, id));
+      .where(inArray(medicationBatches.id, ids));
   }
 
   async deleteByMedicationId(medicationId: string): Promise<void> {

@@ -8,7 +8,7 @@ import { ConfirmChannel } from 'amqplib';
 
 @Injectable()
 export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
-  private connection = amqp.connect([process.env.MESSAGE_SERVICE_URL]);
+  private connection = amqp.connect([process.env.MESSAGE_URL as string]);
   public auditChannel: ChannelWrapper;
 
   onModuleInit() {
@@ -18,18 +18,22 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
   private setupAuditChannel() {
     this.auditChannel = this.connection.createChannel({
       setup: async (channel: ConfirmChannel) => {
-        await channel.assertExchange(process.env.MESSAGE_EXCHANGES, 'topic', {
-          durable: true,
-        });
+        await channel.assertExchange(
+          process.env.MESSAGE_EXCHANGES as string,
+          'topic',
+          {
+            durable: true,
+          },
+        );
 
         await channel.assertQueue(process.env.MESSAGE_AUDIT_QUEUE, {
           durable: true,
         });
 
         await channel.bindQueue(
-          process.env.MESSAGE_AUDIT_QUEUE,
-          process.env.MESSAGE_EXCHANGES,
-          process.env.MESSAGE_AUDIT_ROUTING_KEY,
+          process.env.MESSAGE_AUDIT_QUEUE as string,
+          process.env.MESSAGE_EXCHANGES as string,
+          process.env.MESSAGE_AUDIT_ROUTING_KEY as string,
         );
 
         channel.prefetch(20);
@@ -39,8 +43,8 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
 
   async publishToAudit(payload: any) {
     await this.auditChannel.publish(
-      process.env.MESSAGE_EXCHANGES!,
-      process.env.MESSAGE_AUDIT_ROUTING_KEY!,
+      process.env.MESSAGE_EXCHANGES as string,
+      process.env.MESSAGE_AUDIT_ROUTING_KEY as string,
       JSON.stringify(payload),
     );
   }

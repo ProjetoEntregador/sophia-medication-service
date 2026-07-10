@@ -21,7 +21,7 @@ export class MedicationBatchController {
     private readonly medicationService: MedicationService,
     private readonly pharmacyPermissionService: PharmacyPermissionService,
     private readonly medicationBatchService: MedicationBatchService,
-  ) { }
+  ) {}
 
   @Post()
   async create(
@@ -35,7 +35,7 @@ export class MedicationBatchController {
       authorization,
     );
 
-    return this.medicationBatchService.create(data);
+    return this.medicationBatchService.create(data, authorization);
   }
 
   @Get()
@@ -49,17 +49,12 @@ export class MedicationBatchController {
       Number(size),
     );
     const medicationIds: string[] = [
-      ...new Set<string>(
-        result.data.map((batch) => batch.medicationId),
-      ),
+      ...new Set<string>(result.data.map((batch) => batch.medicationId)),
     ];
 
     await Promise.all(
       medicationIds.map((medicationId) =>
-        this.validatePermissionByMedicationId(
-          medicationId,
-          authorization,
-        ),
+        this.validatePermissionByMedicationId(medicationId, authorization),
       ),
     );
 
@@ -113,7 +108,7 @@ export class MedicationBatchController {
       authorization,
     );
 
-    return this.medicationBatchService.update(id, data);
+    return this.medicationBatchService.update(id, data, authorization);
   }
 
   @Delete(':id')
@@ -127,7 +122,7 @@ export class MedicationBatchController {
       authorization,
     );
 
-    return this.medicationBatchService.delete(id);
+    return this.medicationBatchService.delete(id, authorization);
   }
 
   private async validatePermissionByMedicationId(

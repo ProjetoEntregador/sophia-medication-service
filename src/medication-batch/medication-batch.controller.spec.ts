@@ -26,7 +26,9 @@ describe('MedicationBatchController', () => {
       ],
     }).compile();
 
-    controller = module.get<MedicationBatchController>(MedicationBatchController);
+    controller = module.get<MedicationBatchController>(
+      MedicationBatchController,
+    );
   });
 
   it('should be defined', () => {

@@ -8,9 +8,6 @@ export class FindAllMedicationsUseCase {
   ) {}
 
   async execute(offset: number, size: number) {
-    return this.medicationRepository.findAll(
-      offset,
-      size
-    );
+    return this.medicationRepository.findAll(offset, size);
   }
 }
