@@ -20,9 +20,24 @@ export class DeleteMedicationUseCase {
       throw new NotFoundException('Medicamento não encontrado');
     }
 
-    await this.medicationBatchRepository.deleteByMedicationId(id);
+    const medicationBatches =
+      await this.medicationBatchRepository.findAllByMedicationId(id);
+
+    await this.medicationBatchRepository.deleteMany(
+      medicationBatches.map((batch) => batch.id),
+    );
 
     await this.medicationRepository.delete(id);
+
+    for (const batch of medicationBatches) {
+      await this.auditService.publish({
+        entity: 'medication_batch',
+        oldData: batch,
+        newData: null,
+        operation: 'DELETE',
+        changedBy: this.authUserService.getChangedBy(authorization),
+      });
+    }
 
     await this.auditService.publish({
       entity: 'medication',

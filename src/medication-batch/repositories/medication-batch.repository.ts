@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { count, eq } from 'drizzle-orm';
+import { count, eq, inArray } from 'drizzle-orm';
 import { DB } from '../../database/database.module';
 import { medicationBatches } from '../../database/schema';
 import { CreateMedicationBatchDto } from '../dto/create-medication-batch.dto';
@@ -76,6 +76,15 @@ export class MedicationBatchRepository implements MedicationBatchRepositoryInter
     };
   }
 
+  async findAllByMedicationId(medicationId: string) {
+    const data = await this.db
+      .select()
+      .from(medicationBatches)
+      .where(eq(medicationBatches.medicationId, medicationId));
+
+    return data;
+  }
+
   async update(id: string, data: UpdateMedicationBatchDto) {
     const updateData = {
       ...data,
@@ -95,6 +104,12 @@ export class MedicationBatchRepository implements MedicationBatchRepositoryInter
 
   async delete(id: string): Promise<void> {
     await this.db.delete(medicationBatches).where(eq(medicationBatches.id, id));
+  }
+
+  async deleteMany(ids: string[]): Promise<void> {
+    await this.db
+      .delete(medicationBatches)
+      .where(inArray(medicationBatches.id, ids));
   }
 
   async deleteByMedicationId(medicationId: string): Promise<void> {
