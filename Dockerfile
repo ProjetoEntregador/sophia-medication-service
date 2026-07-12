@@ -1,17 +1,41 @@
-FROM node:20-alpine
+# ---- Stage 1: build ----
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
-
 RUN yarn config set network-timeout 600000 -g
-RUN yarn install
+
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
 COPY . .
-
 RUN yarn build
 
+# ---- Stage 2: dependências de produção ----
+FROM node:20-alpine AS deps
+
+WORKDIR /app
+
+RUN yarn config set network-timeout 600000 -g
+
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile --production \
+    && yarn add drizzle-kit@^0.31.10 --ignore-scripts \
+    && yarn cache clean
+
+# ---- Stage 3: imagem final ----
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+ENV NODE_ENV=production
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY package.json yarn.lock drizzle.config.ts ./
+COPY drizzle ./drizzle
+COPY src/database ./src/database
 COPY scripts/entrypoint.sh /entrypoint.sh
+
 RUN chmod +x /entrypoint.sh
 
 EXPOSE 3000
