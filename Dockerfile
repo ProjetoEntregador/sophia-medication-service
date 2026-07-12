@@ -6,7 +6,11 @@ WORKDIR /app
 RUN yarn config set network-timeout 600000 -g
 
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+RUN for i in 1 2 3 4 5; do \
+      yarn install --frozen-lockfile --network-timeout 600000 && break; \
+      echo "yarn install falhou (tentativa $i), aguardando e tentando de novo..."; \
+      sleep 10; \
+    done
 
 COPY . .
 RUN yarn build
@@ -19,9 +23,13 @@ WORKDIR /app
 RUN yarn config set network-timeout 600000 -g
 
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile --production \
-    && yarn add drizzle-kit@^0.31.10 --ignore-scripts \
-    && yarn cache clean
+RUN for i in 1 2 3 4 5; do \
+      yarn install --frozen-lockfile --production --network-timeout 600000 \
+        && yarn add drizzle-kit@^0.31.10 --ignore-scripts \
+        && yarn cache clean && break; \
+      echo "yarn install falhou (tentativa $i), aguardando e tentando de novo..."; \
+      sleep 10; \
+    done
 
 # ---- Stage 3: imagem final ----
 FROM node:20-alpine AS runner
