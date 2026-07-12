@@ -70,13 +70,11 @@ export class MedicationController {
     @Param('pharmacyId', ParseIntPipe) pharmacyId: number,
     @Query('offset') offset = '0',
     @Query('size') size = '10',
-    @Headers('authorization') authorization: string,
   ) {
     return this.findMedicationsByPharmacyIdUseCase.execute(
       pharmacyId,
       Number(offset),
       Number(size),
-      authorization,
     );
   }
 
