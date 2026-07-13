@@ -89,13 +89,13 @@ docker network create net1
 
 ### 2. Configure o ambiente do contêiner
 
-Ao executar a aplicação pelo Docker Compose deste repositório, utilize o nome do contêiner do PostgreSQL na `DATABASE_URL`:
+Ao executar a aplicação pelo Docker Compose deste repositório, utilize o nome do contêiner do PostgreSQL na `MEDICATION_DATABASE_URL`:
 
 ```env
-DB_USER=database_user
-DB_PASSWORD=database_password
-DB_NAME=database_name
-DATABASE_URL=postgres://database_user:database_password@medication-postgres:5432/database_name
+MEDICATION_DB_USER=database_user
+MEDICATION_DB_PASSWORD=database_password
+MEDICATION_DB_NAME=database_name
+MEDICATION_DATABASE_URL=postgres://database_user:database_password@medication-postgres:5432/database_name
 
 PHARMACY_SERVICE_URL=http://sophia-pharmacy-service:8080
 
@@ -103,7 +103,7 @@ MESSAGE_AUDIT_QUEUE=audit.queue
 MESSAGE_EXCHANGES=pharmacy.exchange
 MESSAGE_AUDIT_ROUTING_KEY=audit
 MESSAGE_URL=amqp://admin:admin@rabbitmq:5672
-PORT=3000
+MEDICATION_PORT=3000
 ```
 
 As credenciais devem coincidir com as utilizadas pela infraestrutura do ambiente.
@@ -153,8 +153,8 @@ docker compose up -d medication-postgres
 Como a aplicação será executada fora do Docker, o PostgreSQL deve ser acessado pela porta publicada no host:
 
 ```env
-DATABASE_URL=postgres://database_user:database_password@localhost:5434/database_name
-PORT=3000
+MEDICATION_DATABASE_URL=postgres://database_user:database_password@localhost:5434/database_name
+MEDICATION_PORT=3000
 ```
 
 Configure também `MESSAGE_URL` e `PHARMACY_SERVICE_URL` com os endereços e as portas publicados no host pelo ambiente completo. Os nomes `rabbitmq` e `sophia-pharmacy-service` são resolvidos somente entre contêineres conectados à rede Docker.
@@ -171,7 +171,7 @@ npm run db:migrate
 npm run start:dev
 ```
 
-A API ficará disponível na porta definida em `PORT`, por padrão `3000`.
+A API ficará disponível na porta definida em `MEDICATION_PORT`, por padrão `3000`.
 
 ## Produção sem Docker
 
@@ -185,18 +185,18 @@ npm run start:prod
 
 ## Variáveis de ambiente
 
-| Variável | Descrição |
-| --- | --- |
-| `DB_USER` | Usuário do PostgreSQL criado pelo Docker Compose |
-| `DB_PASSWORD` | Senha do PostgreSQL |
-| `DB_NAME` | Nome do banco de dados |
-| `DATABASE_URL` | URL completa de conexão usada pela aplicação e pelo Drizzle |
-| `PHARMACY_SERVICE_URL` | URL do Sophia Pharmacy Service |
-| `MESSAGE_URL` | URL de conexão com o RabbitMQ |
-| `MESSAGE_EXCHANGES` | Exchange utilizado na mensageria |
-| `MESSAGE_AUDIT_QUEUE` | Fila de eventos de auditoria |
-| `MESSAGE_AUDIT_ROUTING_KEY` | Chave de roteamento dos eventos de auditoria |
-| `PORT` | Porta interna da aplicação |
+| Variável                    | Descrição                                                   |
+| --------------------------- | ----------------------------------------------------------- |
+| `MEDICATION_DB_USER`        | Usuário do PostgreSQL criado pelo Docker Compose            |
+| `MEDICATION_DB_PASSWORD`    | Senha do PostgreSQL                                         |
+| `MEDICATION_DB_NAME`        | Nome do banco de dados                                      |
+| `MEDICATION_DATABASE_URL`   | URL completa de conexão usada pela aplicação e pelo Drizzle |
+| `PHARMACY_SERVICE_URL`      | URL do Sophia Pharmacy Service                              |
+| `MESSAGE_URL`               | URL de conexão com o RabbitMQ                               |
+| `MESSAGE_EXCHANGES`         | Exchange utilizado na mensageria                            |
+| `MESSAGE_AUDIT_QUEUE`       | Fila de eventos de auditoria                                |
+| `MESSAGE_AUDIT_ROUTING_KEY` | Chave de roteamento dos eventos de auditoria                |
+| `MEDICATION_PORT`           | Porta interna da aplicação                                  |
 
 ## Migrações do banco
 
@@ -230,15 +230,15 @@ npm run test:cov
 
 ## Comandos úteis
 
-| Comando | Descrição |
-| --- | --- |
-| `npm run start:dev` | Inicia a aplicação em modo de desenvolvimento |
-| `npm run build` | Compila o projeto |
-| `npm run start:prod` | Executa a versão compilada |
-| `npm run db:migrate` | Aplica as migrações do banco |
-| `npm test` | Executa os testes unitários |
-| `npm run test:e2e` | Executa os testes end-to-end |
-| `npm run lint` | Executa a análise de código |
+| Comando              | Descrição                                     |
+| -------------------- | --------------------------------------------- |
+| `npm run start:dev`  | Inicia a aplicação em modo de desenvolvimento |
+| `npm run build`      | Compila o projeto                             |
+| `npm run start:prod` | Executa a versão compilada                    |
+| `npm run db:migrate` | Aplica as migrações do banco                  |
+| `npm test`           | Executa os testes unitários                   |
+| `npm run test:e2e`   | Executa os testes end-to-end                  |
+| `npm run lint`       | Executa a análise de código                   |
 
 ## Estrutura principal
 

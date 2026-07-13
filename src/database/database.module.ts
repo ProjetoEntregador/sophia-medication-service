@@ -11,7 +11,7 @@ export const DB = 'DB';
       provide: DB,
       useFactory: () => {
         const pool = new Pool({
-          connectionString: process.env.DATABASE_URL,
+          connectionString: process.env.MEDICATION_DATABASE_URL,
         });
 
         return drizzle(pool);
