@@ -26,7 +26,7 @@ export class UpdateMedicationBatchUseCase {
 
     const updatedBatch = await this.medicationBatchRepository.update(id, data);
 
-    await this.auditService.publish({
+    void this.auditService.publish({
       entity: 'medication_batch',
       oldData: medicationBatch,
       newData: updatedBatch,

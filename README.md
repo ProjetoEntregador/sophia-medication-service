@@ -92,9 +92,9 @@ docker network create net1
 Ao executar a aplicação pelo Docker Compose deste repositório, utilize o nome do contêiner do PostgreSQL na `MEDICATION_DATABASE_URL`:
 
 ```env
-MEDICATION_DB_USER=database_user
-MEDICATION_DB_PASSWORD=database_password
-MEDICATION_DB_NAME=database_name
+DB_USER=database_user
+DB_PASSWORD=database_password
+DB_NAME=database_name
 MEDICATION_DATABASE_URL=postgres://database_user:database_password@medication-postgres:5432/database_name
 
 PHARMACY_SERVICE_URL=http://sophia-pharmacy-service:8080

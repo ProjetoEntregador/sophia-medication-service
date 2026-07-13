@@ -15,7 +15,7 @@ export class CreateMedicationBatchUseCase {
   async execute(data: CreateMedicationBatchDto, authorization?: string) {
     const batch = await this.medicationBatchRepository.create(data);
 
-    await this.auditService.publish({
+    void this.auditService.publish({
       entity: 'medication_batch',
       oldData: null,
       newData: batch,

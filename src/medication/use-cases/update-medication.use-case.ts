@@ -25,7 +25,7 @@ export class UpdateMedicationUseCase {
       throw new NotFoundException('Medication not found');
     }
 
-    await this.auditService.publish({
+    void this.auditService.publish({
       entity: 'medication',
       oldData: previousMedication,
       newData: medication,

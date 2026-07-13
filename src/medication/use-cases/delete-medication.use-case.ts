@@ -30,7 +30,7 @@ export class DeleteMedicationUseCase {
     await this.medicationRepository.delete(id);
 
     for (const batch of medicationBatches) {
-      await this.auditService.publish({
+      void this.auditService.publish({
         entity: 'medication_batch',
         oldData: batch,
         newData: null,
@@ -39,7 +39,7 @@ export class DeleteMedicationUseCase {
       });
     }
 
-    await this.auditService.publish({
+    void this.auditService.publish({
       entity: 'medication',
       oldData: medication,
       newData: null,

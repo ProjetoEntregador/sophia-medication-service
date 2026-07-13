@@ -19,7 +19,7 @@ export class CreateMedicationUseCase {
   ): Promise<MedicationEntity> {
     const medication = await this.medicationRepository.create(data);
 
-    await this.auditService.publish({
+    void this.auditService.publish({
       entity: 'medication',
       oldData: null,
       newData: medication,
