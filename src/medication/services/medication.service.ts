@@ -1,0 +1,39 @@
+import { Injectable } from '@nestjs/common';
+import { CreateMedicationDto } from '../dto/create-medication.dto';
+import { CreateMedicationUseCase } from '../use-cases/create-medication.use-case';
+import { FindAllMedicationsUseCase } from '../use-cases/find-all-medications.use-case';
+import { FindOneMedicationUseCase } from '../use-cases/find-one-medication.use-case';
+import { UpdateMedicationDto } from '../dto/update-medication.dto';
+import { UpdateMedicationUseCase } from '../use-cases/update-medication.use-case';
+import { DeleteMedicationUseCase } from '../use-cases/delete-medication.use-case';
+
+@Injectable()
+export class MedicationService {
+  constructor(
+    private readonly createMedicationUseCase: CreateMedicationUseCase,
+    private readonly findAllMedicationsUseCase: FindAllMedicationsUseCase,
+    private readonly findOneMedicationUseCase: FindOneMedicationUseCase,
+    private readonly updateMedicationUseCase: UpdateMedicationUseCase,
+    private readonly deleteMedicationUseCase: DeleteMedicationUseCase,
+  ) {}
+
+  create(data: CreateMedicationDto, authorization?: string) {
+    return this.createMedicationUseCase.execute(data, authorization);
+  }
+
+  findAll(offset: number, size: number) {
+    return this.findAllMedicationsUseCase.execute(offset, size);
+  }
+
+  findOne(id: string) {
+    return this.findOneMedicationUseCase.execute(id);
+  }
+
+  update(id: string, data: UpdateMedicationDto, authorization?: string) {
+    return this.updateMedicationUseCase.execute(id, data, authorization);
+  }
+
+  async delete(id: string, authorization?: string) {
+    return this.deleteMedicationUseCase.execute(id, authorization);
+  }
+}

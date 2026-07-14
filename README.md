@@ -1,98 +1,251 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Sophia Medication Service
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Sobre o serviço
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+O Sophia Medication Service é o microsserviço responsável pelo gerenciamento de medicamentos e de seus lotes dentro do ecossistema Sophia.
 
-## Description
+Suas principais responsabilidades são:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- criar, listar, atualizar e remover medicamentos;
+- gerenciar lotes de medicamentos;
+- validar permissões por meio do Sophia Pharmacy Service;
+- publicar eventos de auditoria no RabbitMQ;
+- persistir os dados no PostgreSQL com Drizzle ORM.
 
-## Project setup
+> Este repositório contém apenas o microsserviço de medicamentos. Para executar todas as funcionalidades, alguns componentes compartilhados do ecossistema Sophia também devem estar disponíveis.
 
-```bash
-$ yarn install
-```
+## Tecnologias
 
-## Compile and run the project
+- Node.js e TypeScript
+- NestJS
+- PostgreSQL
+- Drizzle ORM
+- RabbitMQ
+- Docker e Docker Compose
+- Jest
 
-```bash
-# development
-$ yarn run start
+## Dependências do ecossistema
 
-# watch mode
-$ yarn run start:dev
+Para executar o serviço integrado ao restante do sistema, é necessário ter:
 
-# production mode
-$ yarn run start:prod
-```
+- RabbitMQ disponível na rede compartilhada;
+- Sophia Pharmacy Service disponível para validação de permissões;
+- rede Docker externa `net1`, utilizada para comunicação entre os microsserviços.
 
-## Run tests
+No ambiente Docker do sistema completo, os nomes esperados são:
 
-```bash
-# unit tests
-$ yarn run test
+- RabbitMQ: `rabbitmq:5672`;
+- Pharmacy Service: `sophia-pharmacy-service:8080`;
+- PostgreSQL deste serviço: `medication-postgres:5432`.
 
-# e2e tests
-$ yarn run test:e2e
+## Pré-requisitos
 
-# test coverage
-$ yarn run test:cov
-```
+- Git
+- Node.js 20.11 ou superior (Node.js 22 LTS recomendado)
+- npm
+- Docker
+- Docker Compose
 
-## Deployment
+## Instalação
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Clone o repositório e acesse a pasta do projeto:
 
 ```bash
-$ yarn install -g @nestjs/mau
-$ mau deploy
+git clone https://github.com/ProjetoEntregador/sophia-medication-service.git
+cd sophia-medication-service
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Instale as dependências:
 
-## Resources
+```bash
+npm ci
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+Crie o arquivo de configuração a partir do exemplo:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```bash
+cp .env.example .env
+```
 
-## Support
+No PowerShell, use:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```powershell
+Copy-Item .env.example .env
+```
 
-## Stay in touch
+Depois, revise as credenciais e os endereços no arquivo `.env` de acordo com o modo de execução descrito abaixo.
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Execução com Docker
 
-## License
+Este é o modo indicado para executar o microsserviço integrado ao ecossistema Sophia.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### 1. Verifique a rede compartilhada
+
+A rede externa `net1` normalmente é criada pela infraestrutura principal do sistema. Caso ela ainda não exista no ambiente local, crie-a uma única vez:
+
+```bash
+docker network create net1
+```
+
+### 2. Configure o ambiente do contêiner
+
+Ao executar a aplicação pelo Docker Compose deste repositório, utilize o nome do contêiner do PostgreSQL na `MEDICATION_DATABASE_URL`:
+
+```env
+DB_USER=database_user
+DB_PASSWORD=database_password
+DB_NAME=database_name
+MEDICATION_DATABASE_URL=postgres://database_user:database_password@medication-postgres:5432/database_name
+
+PHARMACY_SERVICE_URL=http://sophia-pharmacy-service:8080
+
+MESSAGE_AUDIT_QUEUE=audit.queue
+MESSAGE_EXCHANGES=pharmacy.exchange
+MESSAGE_AUDIT_ROUTING_KEY=audit
+MESSAGE_URL=amqp://admin:admin@rabbitmq:5672
+MEDICATION_PORT=3000
+```
+
+As credenciais devem coincidir com as utilizadas pela infraestrutura do ambiente.
+
+### 3. Inicie o microsserviço
+
+```bash
+docker compose up --build -d
+```
+
+A API ficará disponível no host pela porta `3003`.
+
+As migrações são executadas automaticamente pelo `entrypoint` antes da inicialização da aplicação.
+
+Para acompanhar os logs:
+
+```bash
+docker compose logs -f sophia-medication-service
+```
+
+Para encerrar os contêineres deste repositório:
+
+```bash
+docker compose down
+```
+
+## Desenvolvimento local
+
+Neste modo, a aplicação NestJS é executada no computador e apenas o PostgreSQL pode ser iniciado pelo Docker.
+
+### 1. Garanta que a rede exista
+
+```bash
+docker network create net1
+```
+
+Se a rede já existir, o Docker apenas informará que ela já foi criada.
+
+### 2. Inicie o PostgreSQL
+
+```bash
+docker compose up -d medication-postgres
+```
+
+### 3. Configure os endereços locais
+
+Como a aplicação será executada fora do Docker, o PostgreSQL deve ser acessado pela porta publicada no host:
+
+```env
+MEDICATION_DATABASE_URL=postgres://database_user:database_password@localhost:5434/database_name
+MEDICATION_PORT=3000
+```
+
+Configure também `MESSAGE_URL` e `PHARMACY_SERVICE_URL` com os endereços e as portas publicados no host pelo ambiente completo. Os nomes `rabbitmq` e `sophia-pharmacy-service` são resolvidos somente entre contêineres conectados à rede Docker.
+
+### 4. Execute as migrações
+
+```bash
+npm run db:migrate
+```
+
+### 5. Inicie a aplicação
+
+```bash
+npm run start:dev
+```
+
+A API ficará disponível na porta definida em `MEDICATION_PORT`, por padrão `3000`.
+
+## Produção sem Docker
+
+Com as variáveis de ambiente e as dependências externas devidamente configuradas:
+
+```bash
+npm run db:migrate
+npm run build
+npm run start:prod
+```
+
+## Variáveis de ambiente
+
+| Variável                    | Descrição                                                   |
+| --------------------------- | ----------------------------------------------------------- |
+| `MEDICATION_DB_USER`        | Usuário do PostgreSQL criado pelo Docker Compose            |
+| `MEDICATION_DB_PASSWORD`    | Senha do PostgreSQL                                         |
+| `MEDICATION_DB_NAME`        | Nome do banco de dados                                      |
+| `MEDICATION_DATABASE_URL`   | URL completa de conexão usada pela aplicação e pelo Drizzle |
+| `PHARMACY_SERVICE_URL`      | URL do Sophia Pharmacy Service                              |
+| `MESSAGE_URL`               | URL de conexão com o RabbitMQ                               |
+| `MESSAGE_EXCHANGES`         | Exchange utilizado na mensageria                            |
+| `MESSAGE_AUDIT_QUEUE`       | Fila de eventos de auditoria                                |
+| `MESSAGE_AUDIT_ROUTING_KEY` | Chave de roteamento dos eventos de auditoria                |
+| `MEDICATION_PORT`           | Porta interna da aplicação                                  |
+
+## Migrações do banco
+
+Para aplicar manualmente as migrações do Drizzle:
+
+```bash
+npm run db:migrate
+```
+
+No contêiner da aplicação, esse comando já é executado automaticamente durante a inicialização.
+
+## Testes
+
+Testes unitários:
+
+```bash
+npm test
+```
+
+Testes end-to-end:
+
+```bash
+npm run test:e2e
+```
+
+Cobertura de testes:
+
+```bash
+npm run test:cov
+```
+
+## Comandos úteis
+
+| Comando              | Descrição                                     |
+| -------------------- | --------------------------------------------- |
+| `npm run start:dev`  | Inicia a aplicação em modo de desenvolvimento |
+| `npm run build`      | Compila o projeto                             |
+| `npm run start:prod` | Executa a versão compilada                    |
+| `npm run db:migrate` | Aplica as migrações do banco                  |
+| `npm test`           | Executa os testes unitários                   |
+| `npm run test:e2e`   | Executa os testes end-to-end                  |
+| `npm run lint`       | Executa a análise de código                   |
+
+## Estrutura principal
+
+- `src/medication`: gestão de medicamentos;
+- `src/medication-batch`: gestão de lotes;
+- `src/database`: configuração, conexão e schema do banco;
+- `src/messaging`: integração com RabbitMQ e publicação de auditoria;
+- `src/pharmacy`: comunicação com o Sophia Pharmacy Service;
+- `drizzle`: migrações do banco de dados;
+- `test`: testes end-to-end.

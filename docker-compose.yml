@@ -1,0 +1,147 @@
+services:
+  sophia-medication-service:
+    build: .
+    container_name: sophia-medication-service
+    env_file:
+      - .env
+    ports:
+      - '3003:3000'
+    depends_on:
+      - medication-postgres
+    restart: always
+    networks:
+      - net1
+
+  medication-postgres:
+    image: postgres:15
+    container_name: medication-postgres
+    env_file:
+      - .env
+    ports:
+      - '5434:5432'
+    environment:
+      - POSTGRES_PASSWORD=${MEDICATION_DB_PASSWORD}
+      - POSTGRES_USER=${MEDICATION_DB_USER}
+      - POSTGRES_DB=${MEDICATION_DB_NAME}
+    volumes:
+      - medication_postgres_data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d
+      - ./logs:/var/log/postgresql
+    restart: always
+    command:
+      - 'postgres'
+      - '-c'
+      - 'shared_preload_libraries=pg_stat_statements'
+      - '-c'
+      - 'pg_stat_statements.track=all'
+      - '-c'
+      - 'track_io_timing=on'
+      - '-c'
+      - 'logging_collector=on'
+      - '-c'
+      - 'log_directory=/var/log/postgresql'
+      - '-c'
+      - 'log_filename=postgresql-%Y-%m-%d.log'
+      - '-c'
+      - 'log_line_prefix=%m [%p] user=%u db=%d app=%a client=%h '
+      - '-c'
+      - 'log_statement=mod'
+      - '-c'
+      - 'log_min_duration_statement=1000'
+      - '-c'
+      - 'log_connections=on'
+      - '-c'
+      - 'log_disconnections=on'
+      - '-c'
+      - 'log_lock_waits=on'
+      - '-c'
+      - 'deadlock_timeout=5s'
+    networks:
+      - net1
+
+  medication-postgres-exporter:
+    image: prometheuscommunity/postgres-exporter
+    container_name: medication-postgres-exporter
+    depends_on:
+      - medication-postgres
+    environment:
+      DATA_SOURCE_NAME: 'postgresql://${DB_USER}:${DB_PASSWORD}@medication-postgres:5432/${DB_NAME}?sslmode=disable'
+      PG_EXPORTER_EXTEND_QUERY_PATH: '/etc/postgres_exporter/queries.yml'
+    volumes:
+      - ./postgres-exporter/queries.yml:/etc/postgres_exporter/queries.yml
+    command:
+      - '--no-collector.stat_replication'
+    networks:
+      - net1
+
+  medication-backup-service:
+    image: postgres:16
+    container_name: medication-backup-service
+    depends_on:
+      - medication-postgres
+    environment:
+      POSTGRES_HOST: medication-postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      BACKUP_RETENTION_DAYS: 7
+    volumes:
+      - ./backups:/backups
+      - ./scripts/backup.sh:/scripts/backup.sh
+      - ./scripts/restore.sh:/scripts/restore.sh
+    entrypoint: >
+      bash -c "
+      chmod +x /scripts/backup.sh &&
+      chmod +x /scripts/restore.sh &&
+      while true; do
+        /scripts/backup.sh;
+        sleep 86400;
+      done
+      "
+    networks:
+      - net1
+
+  medication-maintenance-service:
+    image: postgres:16
+    container_name: medication-maintenance-service
+    depends_on:
+      - medication-postgres
+    environment:
+      POSTGRES_HOST: medication-postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      LOG_RETENTION_DAYS: 7
+    volumes:
+      - ./scripts/maintenance.sh:/scripts/maintenance.sh
+      - ./logs:/postgres-logs
+    entrypoint: >
+      bash -c "
+      chmod +x /scripts/maintenance.sh &&
+      while true; do
+        /scripts/maintenance.sh;
+        sleep 604800;
+      done
+      "
+    networks:
+      - net1
+
+  medication-promtail:
+    image: grafana/promtail:2.9.8
+    container_name: medication-promtail
+    volumes:
+      - ./logs:/var/log/postgresql:ro
+      - ./promtail/promtail-config.yml:/etc/promtail/config.yml
+    command: -config.file=/etc/promtail/config.yml
+    networks:
+      - net1
+
+networks:
+  net1:
+    external: true
+    name: net1
+
+volumes:
+  medication_postgres_data:
