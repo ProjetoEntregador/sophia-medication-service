@@ -82,9 +82,9 @@ services:
     environment:
       POSTGRES_HOST: medication-postgres
       POSTGRES_PORT: 5432
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${MEDICATION_DB_USER}
+      POSTGRES_PASSWORD: ${MEDICATION_DB_PASSWORD}
+      POSTGRES_DB: ${MEDICATION_DB_NAME}
       BACKUP_RETENTION_DAYS: 7
     volumes:
       - ./backups:/backups
@@ -110,9 +110,9 @@ services:
     environment:
       POSTGRES_HOST: medication-postgres
       POSTGRES_PORT: 5432
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${MEDICATION_DB_USER}
+      POSTGRES_PASSWORD: ${MEDICATION_DB_PASSWORD}
+      POSTGRES_DB: ${MEDICATION_DB_NAME}
       LOG_RETENTION_DAYS: 7
     volumes:
       - ./scripts/maintenance.sh:/scripts/maintenance.sh
