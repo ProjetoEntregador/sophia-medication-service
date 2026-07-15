@@ -65,7 +65,7 @@ services:
     depends_on:
       - medication-postgres
     environment:
-      DATA_SOURCE_NAME: 'postgresql://${DB_USER}:${DB_PASSWORD}@medication-postgres:5432/${DB_NAME}?sslmode=disable'
+      DATA_SOURCE_NAME: 'postgresql://${MEDICATION_DB_USER}:${MEDICATION_DB_PASSWORD}@medication-postgres:5432/${MEDICATION_DB_NAME}?sslmode=disable'
       PG_EXPORTER_EXTEND_QUERY_PATH: '/etc/postgres_exporter/queries.yml'
     volumes:
       - ./postgres-exporter/queries.yml:/etc/postgres_exporter/queries.yml
@@ -82,9 +82,9 @@ services:
     environment:
       POSTGRES_HOST: medication-postgres
       POSTGRES_PORT: 5432
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${MEDICATION_DB_USER}
+      POSTGRES_PASSWORD: ${MEDICATION_DB_PASSWORD}
+      POSTGRES_DB: ${MEDICATION_DB_NAME}
       BACKUP_RETENTION_DAYS: 7
     volumes:
       - ./backups:/backups
@@ -110,9 +110,9 @@ services:
     environment:
       POSTGRES_HOST: medication-postgres
       POSTGRES_PORT: 5432
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${MEDICATION_DB_USER}
+      POSTGRES_PASSWORD: ${MEDICATION_DB_PASSWORD}
+      POSTGRES_DB: ${MEDICATION_DB_NAME}
       LOG_RETENTION_DAYS: 7
     volumes:
       - ./scripts/maintenance.sh:/scripts/maintenance.sh
